@@ -1,0 +1,46 @@
+version: '3.3'
+
+services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'mysql'
+      MYSQL_USER: 'stan'
+      MYSQL_PASSWORD: 'abc123@A'
+      MYSQL_ROOT_PASSWORD: 'abc123@A'
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    networks:
+      - dev_net
+  postgress:
+    container_name: postgres
+    image: postgres
+    restart: always
+    environment:
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwerty
+      POSTGRES_DB: postgres
+    networks:
+      - dev_net
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    depends_on: 
+      - postgress
+    ports:
+       - 9090:8080
+    networks:
+      - dev_net
+
+networks:
+  dev_net:
+    driver: bridge
